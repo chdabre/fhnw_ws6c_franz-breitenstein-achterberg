@@ -10,32 +10,45 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Movie> _movies = List<Movie>();
+  ScrollController _controller;
+  int _page = 1;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    _loadMovies(_page);
 
-    _loadMovies();
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
+
+    super.initState();
   }
 
-  void _loadMovies() {
-    final tmdbApi = Provider.of<TmdbApi>(context);
-    tmdbApi.discoverMovies()
-      .then((value) => {
-        _movies = value
-      });
+  void _loadMovies(int page) {
+    final tmdbApi = Provider.of<TmdbApi>(context, listen: false);
+    tmdbApi.discoverMovies(page: page)
+      .then((value) => setState((){ _movies.addAll(value); }));
+  }
+
+  /// from https://medium.com/@diegoveloper/flutter-lets-know-the-scrollcontroller-and-scrollnotification-652b2685a4ac
+  void _scrollListener() {
+    // Reached the bottom
+    if (_controller.offset >= _controller.position.maxScrollExtent && !_controller.position.outOfRange) {
+          setState(() {
+            debugPrint("reached bottom, page: " + _page.toString());
+            _loadMovies(++_page);
+          });
+    }
   }
 
   GridTile _buildMovieGridTile(BuildContext context, Movie movie) {
+    final posterUrl = TmdbApi.buildImageUrl(movie.posterPath, 'w185');
+
     return GridTile(
         child: Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Image.network(
-                TmdbApi.buildImageUrl(movie.posterPath, 'w185'),
-                fit: BoxFit.cover,
-            )
-      )
-    );
+          color: Colors.grey,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: posterUrl != null ? Image.network(posterUrl, fit: BoxFit.cover) : Container(),
+        )
+      );
   }
 
   @override
@@ -46,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: CustomScrollView(
         primary: false,
+        controller: _controller,
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: Padding(

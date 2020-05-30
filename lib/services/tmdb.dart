@@ -40,7 +40,11 @@ class TmdbApi {
   }
 
   static String buildImageUrl(String imagePath, String size) {
-    return IMAGE_BASE_URL + size + imagePath;
+    if (imagePath != null) {
+      return IMAGE_BASE_URL + size + imagePath;
+    } else {
+      return null;
+    }
   }
 
   Future<bool> testApi() async {
@@ -61,9 +65,10 @@ class TmdbApi {
     }
   }
 
-  Future<List<Movie>> discoverMovies() async {
+  Future<List<Movie>> discoverMovies({int page = 1}) async {
     final response = await _request('discover/movie', queryParameters: {
       'sort_by': 'popularity.desc',
+      'page': page.toString()
     });
     
     if (response.statusCode == 200) {

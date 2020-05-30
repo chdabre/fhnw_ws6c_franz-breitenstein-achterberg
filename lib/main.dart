@@ -27,7 +27,7 @@ class MovieApp extends StatelessWidget {
     return MaterialApp(
       title: 'ExampleApp',
       theme: appTheme(),
-      initialRoute: '/',
+      initialRoute: '/genres',
       routes: routes,
     );
   }

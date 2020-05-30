@@ -10,7 +10,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("conässeur", style: Theme.of(context).textTheme.headline5,),
+        title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),
       ),
       body: Text("Home Screen!")
     );

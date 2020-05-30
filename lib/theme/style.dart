@@ -31,11 +31,10 @@ final ThemeData theme = appTheme();
 ThemeData appTheme() {
   final ThemeData base = ThemeData.light();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: ThemeColors.mustard,
-      systemNavigationBarColor: ThemeColors.mustard,
-      systemNavigationBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light
+      statusBarColor: ThemeColors.background,
+      systemNavigationBarColor: ThemeColors.background,
+      systemNavigationBarIconBrightness: Brightness.dark,
+
   ));
   return base.copyWith(
     // Define the default brightness and colors
@@ -43,7 +42,10 @@ ThemeData appTheme() {
     scaffoldBackgroundColor: ThemeColors.background,
     dialogBackgroundColor: ThemeColors.background,
     primaryColor: ThemeColors.mustard,
-
+    appBarTheme: AppBarTheme(
+        color: ThemeColors.background,
+        brightness: Brightness.light,
+    ),
     // Define the default text Themes
     textTheme: _buildDefaultTextTheme(base.textTheme),
     primaryTextTheme: _buildDefaultTextTheme(base.primaryTextTheme),

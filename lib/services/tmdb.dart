@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+import 'package:movieapp/models/genre.dart';
 
 import 'package:movieapp/models/movie.dart';
 import 'package:movieapp/models/person.dart';
@@ -78,6 +79,16 @@ class TmdbApi {
       return Person.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to fetch Person. Status: ' + response.statusCode.toString());
+    }
+  }
+
+  Future<List<Genre>> fetchGenres() async {
+    final response = await _request('genre/movie/list');
+
+    if (response.statusCode == 200) {
+      return Genre.listFromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to fetch Genres. Status: ' + response.statusCode.toString());
     }
   }
 }

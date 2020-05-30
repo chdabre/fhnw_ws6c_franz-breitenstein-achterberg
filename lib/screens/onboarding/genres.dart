@@ -13,7 +13,7 @@ class _GenreScreenState extends State<GenreScreen> {
           title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),
         ),
         body: Padding(
-          padding: null,
+          padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: <Widget>[
               Text("welche genres bevorzugst du?", style: Theme.of(context).textTheme.headline5,)

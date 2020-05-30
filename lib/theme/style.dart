@@ -17,6 +17,12 @@ abstract class ThemeColors {
 /// builds the main text theme
 TextTheme _buildDefaultTextTheme(TextTheme base) {
   return base.copyWith(
+    headline4: GoogleFonts.playfairDisplay(
+      fontSize: 24,
+      height: 1.5,
+      fontWeight: FontWeight.w900,
+      color: ThemeColors.textBlackHighEmphasis,
+    ),
     headline5: GoogleFonts.playfairDisplay(
       fontSize: 20,
       height: 1.0,

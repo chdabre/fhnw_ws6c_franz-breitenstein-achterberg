@@ -27,8 +27,8 @@ class Movie {
       releaseDate: DateTime.parse(json['release_date']),
       posterPath: json['poster_path'],
       backdropPath: json['backdrop_path'],
-      cast: Person.listFromJson(json['credits']['cast']),
-      crew: Person.listFromJson(json['credits']['crew'])
+      cast: json['credits'] != null ? Person.listFromJson(json['credits']['cast']) : null,
+      crew: json['credits'] != null ? Person.listFromJson(json['credits']['crew']) : null,
     );
   }
 

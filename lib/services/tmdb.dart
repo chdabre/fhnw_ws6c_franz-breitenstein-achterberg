@@ -10,6 +10,7 @@ import 'package:movieapp/models/person.dart';
 class TmdbApi {
   static const String API_HOST = "api.themoviedb.org";
   static const String API_BASE_URL = "/3/";
+  static const String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
 
   String _apiKey;
 
@@ -21,7 +22,7 @@ class TmdbApi {
     String secretsJson = await rootBundle.loadString("lib/services/secrets.json");
     return json.decode(secretsJson)['tmdb_key'];
   }
-  
+
   Future<http.Response> _request(String path, { Map<String, String> queryParameters }) async {
     if (_apiKey == null) throw Exception('API not initialized');
 
@@ -34,6 +35,10 @@ class TmdbApi {
     final uri = Uri.https(API_HOST, API_BASE_URL + path, query);
 
     return await http.get(uri);
+  }
+
+  static String buildImageUrl(String imagePath, String size) {
+    return IMAGE_BASE_URL + size + imagePath;
   }
 
   Future<bool> testApi() async {
@@ -51,6 +56,18 @@ class TmdbApi {
       return Movie.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to fetch Movie. Status: ' + response.statusCode.toString());
+    }
+  }
+
+  Future<List<Movie>> discoverMovies() async {
+    final response = await _request('discover/movie', queryParameters: {
+      'sort_by': 'popularity.desc',
+    });
+    
+    if (response.statusCode == 200) {
+      return Movie.listFromJson(json.decode(response.body)['results']);
+    } else {
+      throw Exception('Failed to fetch Movie List. Status: ' + response.statusCode.toString());
     }
   }
 

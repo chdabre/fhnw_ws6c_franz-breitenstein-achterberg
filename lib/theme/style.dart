@@ -20,7 +20,7 @@ TextTheme _buildDefaultTextTheme(TextTheme base) {
     headline5: GoogleFonts.playfairDisplay(
       fontSize: 20,
       height: 1.0,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w900,
       color: ThemeColors.textBlackHighEmphasis,
     )
   );
@@ -31,11 +31,11 @@ final ThemeData theme = appTheme();
 ThemeData appTheme() {
   final ThemeData base = ThemeData.light();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: ThemeColors.background,
-      systemNavigationBarColor: ThemeColors.background,
-      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarColor: ThemeColors.mustard,
+      systemNavigationBarColor: ThemeColors.mustard,
+      systemNavigationBarIconBrightness: Brightness.light,
       statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.dark
+      statusBarIconBrightness: Brightness.light
   ));
   return base.copyWith(
     // Define the default brightness and colors

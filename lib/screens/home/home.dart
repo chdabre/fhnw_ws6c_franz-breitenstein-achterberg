@@ -8,8 +8,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("Home Screen!")
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("conässeur", style: Theme.of(context).textTheme.headline5,),
+      ),
+      body: Text("Home Screen!")
     );
   }
 }

@@ -1,5 +1,5 @@
-/// Represents the primary information of a TMDB Person object.
-/// https://developers.themoviedb.org/3/people/get-person-details
+/// Represents the primary information of a TMDB Genre object.
+/// https://developers.themoviedb.org/3/genres/get-movie-list
 class Genre {
   final int id;
 

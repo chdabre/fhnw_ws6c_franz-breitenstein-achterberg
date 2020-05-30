@@ -21,13 +21,19 @@ class _HomeScreenState extends State<HomeScreen> {
   void _loadMovies() {
     final tmdbApi = Provider.of<TmdbApi>(context);
     tmdbApi.discoverMovies()
-      .then((value) => { _movies = value });
+      .then((value) => {
+        _movies = value
+      });
   }
 
   GridTile _buildMovieGridTile(BuildContext context, Movie movie) {
     return GridTile(
         child: Card(
-            child: Image.network(TmdbApi.buildImageUrl(movie.posterPath, 'w500'))
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Image.network(
+                TmdbApi.buildImageUrl(movie.posterPath, 'w185'),
+                fit: BoxFit.cover,
+            )
       )
     );
   }
@@ -38,25 +44,26 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16),
-        child: CustomScrollView(
-          primary: false,
-          slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: Text("wir glauben, dass dir diese filme gefallen könnten",
-                  style: Theme.of(context).textTheme.headline4,
-                ),
+      body: CustomScrollView(
+        primary: false,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text("wir glauben, dass dir diese filme gefallen könnten",
+                style: Theme.of(context).textTheme.headline4,
               ),
             ),
-            SliverGrid.count(
+          ),
+          SliverPadding(
+            padding:  const EdgeInsets.all(16),
+            sliver: SliverGrid.count(
                 crossAxisCount: 3,
+                childAspectRatio: 2/3,
                 children: _movies.map((e) => _buildMovieGridTile(context, e)).toList()
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       )
     );
   }

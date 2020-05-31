@@ -39,8 +39,6 @@ class _DetailScreenState extends State<DetailScreen> {
                 Text("Genres: Animation, Adventure, Comedy, Family", style: Theme.of(context).textTheme.bodyText2,),
                 Text("Duration: 117 Minutes", style: Theme.of(context).textTheme.bodyText2,),
                 SizedBox(height: 20),
-                Text("Lightning McQueen, a hotshot rookie race car driven to succeed, discovers that life is about the journey, not the finish line, when he finds himself unexpectedly detoured in the sleepy Route 66 town of Radiator Springs. On route across the country to the big Piston Cup Championship in California to compete against two seasoned pros, McQueen gets to know the town's offbeat characters.", style: Theme.of(context).textTheme.bodyText2,),
-                SizedBox(height: 20),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: Image.network("https://image.tmdb.org/t/p/w600_and_h900_bestv2/qa6HCwP4Z15l3hpsASz3auugEW6.jpg",
@@ -48,11 +46,17 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
+                Text("Lightning McQueen, a hotshot rookie race car driven to succeed, discovers that life is about the journey, not the finish line, when he finds himself unexpectedly detoured in the sleepy Route 66 town of Radiator Springs. On route across the country to the big Piston Cup Championship in California to compete against two seasoned pros, McQueen gets to know the town's offbeat characters.", style: Theme.of(context).textTheme.bodyText2,),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.network("https://image.tmdb.org/t/p/w533_and_h300_bestv2/sd4xN5xi8tKRPrJOWwNiZEile7f.jpg",
+                    height: 250,
+                  ),
+                ),
                 Text("Cast:", style: Theme.of(context).textTheme.bodyText1,),
                 SizedBox(height: 10),
                 Container(
                   height: 150,
-
                   child: Scrollbar(
                     child: ListView(
                       // This next line does the trick.

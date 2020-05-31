@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'package:movieapp/models/genre.dart';
@@ -8,24 +7,25 @@ import 'package:movieapp/models/movie.dart';
 import 'package:movieapp/models/person.dart';
 
 /// Wrapper for TMDB API
-/// Call init() before making requests to load the API key from the secrets file.
 class TmdbApi {
   static const String API_HOST = "api.themoviedb.org";
   static const String API_BASE_URL = "/3/";
   static const String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
 
-  String _apiKey;
+  static String _apiKey;
 
-  Future<void> init() async {
+  static Future<void> init() async {
+    if (_apiKey != null) return;
+
     _apiKey = await _loadApiKey();
   }
 
-  Future<String> _loadApiKey() async {
+  static Future<String> _loadApiKey() async {
     String secretsJson = await rootBundle.loadString("lib/services/secrets.json");
     return json.decode(secretsJson)['tmdb_key'];
   }
 
-  Future<http.Response> _request(String path, { Map<String, String> queryParameters }) async {
+  static Future<http.Response> _request(String path, { Map<String, String> queryParameters }) async {
     if (_apiKey == null) throw Exception('API not initialized');
 
     final query = {
@@ -47,13 +47,13 @@ class TmdbApi {
     }
   }
 
-  Future<bool> testApi() async {
+  static Future<bool> testApi() async {
     final response = await _request('');
 
     return response.statusCode == 200;
   }
 
-  Future<Movie> fetchMovie(int id) async {
+  static Future<Movie> fetchMovie(int id) async {
     final response = await _request('movie/' + id.toString(), queryParameters: {
       'append_to_response': 'credits',
     });
@@ -65,7 +65,7 @@ class TmdbApi {
     }
   }
 
-  Future<List<Movie>> discoverMovies({int page = 1}) async {
+  static Future<List<Movie>> discoverMovies({int page = 1}) async {
     final response = await _request('discover/movie', queryParameters: {
       'sort_by': 'popularity.desc',
       'page': page.toString()
@@ -78,7 +78,7 @@ class TmdbApi {
     }
   }
 
-  Future<Person> fetchPerson(int id) async {
+  static Future<Person> fetchPerson(int id) async {
     final response = await _request('person/' + id.toString());
 
     if (response.statusCode == 200) {
@@ -88,7 +88,7 @@ class TmdbApi {
     }
   }
 
-  Future<List<Genre>> fetchGenres() async {
+  static Future<List<Genre>> fetchGenres() async {
     final response = await _request('genre/movie/list');
 
     if (response.statusCode == 200) {

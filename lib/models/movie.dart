@@ -1,8 +1,9 @@
+import 'model.dart';
 import 'person.dart';
 
 /// Represents the primary information of a TMDB Movie object.
 /// https://developers.themoviedb.org/3/movies/get-movie-details
-class Movie {
+class Movie extends Model {
   final int id;
 
   final String title;
@@ -34,5 +35,30 @@ class Movie {
 
   static List<Movie> listFromJson(List<dynamic> json) {
     return json.map((e) => Movie.fromJson(e)).toList();
+  }
+
+  static fromMap(Map<String, dynamic> map) {
+    return Movie(
+      id: map['id'],
+      title: map['title'],
+      overview: map['overview'],
+      releaseDate: DateTime.parse(map['release_date']),
+      posterPath: map['poster_path'],
+      backdropPath: map['backdrop_path']
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
+      'title': title,
+      'overview': overview,
+      'release_data': releaseDate.toIso8601String(),
+      'poster_path': posterPath,
+      'backdrop_path': backdropPath
+    };
+
+    if (id != null) map['id'] = id;
+
+    return map;
   }
 }

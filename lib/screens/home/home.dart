@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:movieapp/models/movie.dart';
+import 'package:movieapp/services/db.dart';
 import 'package:movieapp/services/tmdb.dart';
-import 'package:provider/provider.dart';
+import 'package:movieapp/theme/style.dart';
+
+import 'components/movie_grid_tile.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,15 +19,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     _loadMovies(_page);
 
-    _controller = ScrollController();
-    _controller.addListener(_scrollListener);
+    _controller = ScrollController()..addListener(_scrollListener);
 
     super.initState();
   }
 
   void _loadMovies(int page) {
-    final tmdbApi = Provider.of<TmdbApi>(context, listen: false);
-    tmdbApi.discoverMovies(page: page)
+    TmdbApi.discoverMovies(page: page)
       .then((value) => setState((){ _movies.addAll(value); }));
   }
 
@@ -33,22 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // Reached the bottom
     if (_controller.offset >= _controller.position.maxScrollExtent && !_controller.position.outOfRange) {
           setState(() {
-            debugPrint("reached bottom, page: " + _page.toString());
             _loadMovies(++_page);
           });
     }
-  }
-
-  GridTile _buildMovieGridTile(BuildContext context, Movie movie) {
-    final posterUrl = TmdbApi.buildImageUrl(movie.posterPath, 'w185');
-
-    return GridTile(
-        child: Card(
-          color: Colors.grey,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: posterUrl != null ? Image.network(posterUrl, fit: BoxFit.cover) : Container(),
-        )
-      );
   }
 
   @override
@@ -74,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
             sliver: SliverGrid.count(
                 crossAxisCount: 3,
                 childAspectRatio: 2/3,
-                children: _movies.map((e) => _buildMovieGridTile(context, e)).toList()
+                children: _movies.map((m) => MovieGridTile(movie: m)).toList()
             ),
           ),
         ],

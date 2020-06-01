@@ -8,9 +8,11 @@ class MovieGridTile extends StatefulWidget {
   const MovieGridTile({
     Key key,
     @required this.movie,
+    this.onUpdate,
   }) : super(key: key);
 
   final Movie movie;
+  final Function onUpdate;
 
   @override
   _MovieGridTileState createState() => _MovieGridTileState();
@@ -33,6 +35,8 @@ class _MovieGridTileState extends State<MovieGridTile> {
     } else {
       DB.delete('movie', widget.movie);
     }
+    if (widget.onUpdate != null) widget.onUpdate();
+
     _updateFavourite();
   }
 

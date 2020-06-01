@@ -20,9 +20,9 @@ class MovieApp extends StatelessWidget {
     return MaterialApp(
       title: 'connässeur',
       theme: appTheme(),
-      initialRoute: '/genres',
+      initialRoute: '/',
       routes: routes,
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false
     );
   }
 }

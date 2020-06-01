@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 import 'model.dart';
 import 'person.dart';
 
@@ -44,7 +42,7 @@ class Movie extends Model {
       id: map['id'],
       title: map['title'],
       overview: map['overview'],
-      releaseDate: DateTime.parse(map['release_date']),
+      releaseDate: map['release_date'] != null ? DateTime.parse(map['release_date']) : null,
       posterPath: map['poster_path'],
       backdropPath: map['backdrop_path']
     );
@@ -54,7 +52,7 @@ class Movie extends Model {
     Map<String, dynamic> map = {
       'title': title,
       'overview': overview,
-      'release_data': releaseDate.toIso8601String(),
+      'release_data': releaseDate != null ? releaseDate.toIso8601String() : null,
       'poster_path': posterPath,
       'backdrop_path': backdropPath
     };

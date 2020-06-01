@@ -25,20 +25,29 @@ class _SearchHeaderState extends State<SearchHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Expanded(
-          child: _showSearch ? TextField(
-            decoration: InputDecoration(
-              hintText: "Suchen"
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: _showSearch ? TextField(
+                decoration: InputDecoration(
+                  hintText: "Suchen"
+                ),
+                autofocus: true,
+                onChanged: widget.onInput,
+              ) : Text("wir glauben, dass dir diese filme gefallen könnten",  style: Theme.of(context).textTheme.headline4,),
             ),
-            autofocus: true,
-            onChanged: widget.onInput,
-          ) : Text("wir glauben, dass dir diese filme gefallen könnten",  style: Theme.of(context).textTheme.headline4,),
+            IconButton(
+              icon: Icon(_showSearch ? Icons.close : Icons.search),
+              onPressed: _toggleSearch,
+            )
+          ],
         ),
-        IconButton(
-          icon: Icon(_showSearch ? Icons.close : Icons.search),
-          onPressed: _toggleSearch,
+        if (!_showSearch) Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text("Doppeltippen, um zu favorisieren.", style: Theme.of(context).textTheme.caption,),
         )
       ],
     );

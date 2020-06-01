@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movieapp/models/movie.dart';
 import 'package:movieapp/services/tmdb.dart';
 
-import 'components/movie_grid_tile.dart';
+import '../../components/movie_grid_tile.dart';
 import 'components/search_header.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,7 +16,10 @@ class _HomeScreenState extends State<HomeScreen> {
   ScrollController _controller;
   int _page = 1;
 
-  List<Widget> get _gridItems => _movies.map((m) => MovieGridTile(movie: m)).toList();
+  List<Widget> get _gridItems => _movies.map((m) => MovieGridTile(
+      key: Key(m.id.toString()),
+      movie: m
+  )).toList();
 
   void _loadMovies(int page) async {
     if (page == 1) _movies.clear();
@@ -56,10 +59,22 @@ class _HomeScreenState extends State<HomeScreen> {
         slivers: <Widget>[
           SliverAppBar(
             pinned: true,
-            title: Text("connässeur", style: Theme.of(context).textTheme.headline5,)
+            title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.favorite),
+                onPressed: () async {
+                  await Navigator.pushNamed(context, '/favourites');
+                  setState(() {
+                    _page = 1;
+                  });
+                  _loadMovies(_page);
+                }
+              )
+            ],
           ),
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverToBoxAdapter(
               child: SearchHeader(
                 onInput: (input) {

@@ -17,28 +17,52 @@ class MovieGridTile extends StatefulWidget {
 }
 
 class _MovieGridTileState extends State<MovieGridTile> {
-  bool isFavourite = false;
-  String posterUrl;
+  bool _isFavourite = false;
+  String _posterUrl;
 
 
-  void _updateFavourite() {
-    _isFavourite().then((value) => setState(() {
-      isFavourite = value;
-    }));
+  void _updateFavourite() async {
+    final count = (await DB.queryId('movie', widget.movie.id)).length;
+    _isFavourite = count > 0;
+    setState(() {});
   }
 
-  Future<bool> _isFavourite() async {
-    final count = (await DB.queryId('movie', widget.movie.id)).length;
-    return count > 0;
+  void _toggleFavourite() {
+    if (!_isFavourite) {
+      DB.insert('movie', widget.movie);
+    } else {
+      DB.delete('movie', widget.movie);
+    }
+    _updateFavourite();
   }
 
   @override
   void initState() {
     super.initState();
 
-    posterUrl = TmdbApi.buildImageUrl(widget.movie.posterPath, 'w185');
+    _posterUrl = TmdbApi.buildImageUrl(widget.movie.posterPath, 'w185');
     _updateFavourite();
   }
+
+  Widget get _posterImage => Image.network(_posterUrl,
+      fit: BoxFit.cover,
+      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(ThemeColors.mustard),
+          ),
+        );
+      }
+  );
+
+  Widget get _favouriteIcon => Align(
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Icon(Icons.favorite, color: ThemeColors.mustard, size: 16,),
+      )
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -47,25 +71,12 @@ class _MovieGridTileState extends State<MovieGridTile> {
           color: Colors.grey,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: InkWell(
-            onDoubleTap: () {
-              if (!isFavourite) {
-                DB.insert('movie', widget.movie);
-              } else {
-                DB.delete('movie', widget.movie);
-              }
-              _updateFavourite();
-            },
+            onDoubleTap: _toggleFavourite,
             child: Stack(
               fit: StackFit.expand,
               children: <Widget>[
-                if(posterUrl != null) Image.network(posterUrl, fit: BoxFit.cover),
-                if(isFavourite) Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Icon(Icons.favorite, color: ThemeColors.mustard, size: 16,),
-                    )
-                )
+                if (_posterUrl != null) _posterImage,
+                if(_isFavourite) _favouriteIcon,
               ],
             ),
           ),
@@ -73,3 +84,4 @@ class _MovieGridTileState extends State<MovieGridTile> {
     );
   }
 }
+

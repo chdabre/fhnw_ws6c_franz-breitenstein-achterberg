@@ -41,13 +41,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),
-      ),
       body: CustomScrollView(
         primary: false,
         controller: _controller,
         slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            title: Text("connässeur", style: Theme.of(context).textTheme.headline5,)
+          ),
           SliverPadding(
             padding: const EdgeInsets.all(16),
             sliver: SliverToBoxAdapter(

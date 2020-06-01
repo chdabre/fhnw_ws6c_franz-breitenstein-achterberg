@@ -20,13 +20,6 @@ class _MovieGridTileState extends State<MovieGridTile> {
   bool isFavourite = false;
   String posterUrl;
 
-  @override
-  void initState() {
-    super.initState();
-
-    posterUrl = TmdbApi.buildImageUrl(widget.movie.posterPath, 'w185');
-    _updateFavourite();
-  }
 
   void _updateFavourite() {
     _isFavourite().then((value) => setState(() {
@@ -37,6 +30,14 @@ class _MovieGridTileState extends State<MovieGridTile> {
   Future<bool> _isFavourite() async {
     final count = (await DB.queryId('movie', widget.movie.id)).length;
     return count > 0;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    posterUrl = TmdbApi.buildImageUrl(widget.movie.posterPath, 'w185');
+    _updateFavourite();
   }
 
   @override

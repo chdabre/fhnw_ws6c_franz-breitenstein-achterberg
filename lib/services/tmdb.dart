@@ -78,6 +78,19 @@ class TmdbApi {
     }
   }
 
+  static Future<List<Movie>> searchMovies(String query, {int page = 1}) async {
+    final response = await _request('search/movie', queryParameters: {
+      'query': query,
+      'page': page.toString()
+    });
+
+    if (response.statusCode == 200) {
+      return Movie.listFromJson(json.decode(response.body)['results']);
+    } else {
+      throw Exception('Failed to fetch Movie List. Status: ' + response.statusCode.toString());
+    }
+  }
+
   static Future<Person> fetchPerson(int id) async {
     final response = await _request('person/' + id.toString());
 

@@ -51,6 +51,9 @@ ThemeData appTheme() {
     appBarTheme: AppBarTheme(
         color: ThemeColors.background,
         brightness: Brightness.light,
+        iconTheme: IconThemeData(
+          color: ThemeColors.textBlackMediumEmphasis
+        )
     ),
     // Define the default text Themes
     textTheme: _buildDefaultTextTheme(base.textTheme),

@@ -48,9 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
         primary: false,
         controller: _controller,
         slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverToBoxAdapter(
               child: Text("wir glauben, dass dir diese filme gefallen könnten",
                 style: Theme.of(context).textTheme.headline4,
               ),

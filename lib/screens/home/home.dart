@@ -3,6 +3,7 @@ import 'package:movieapp/models/movie.dart';
 import 'package:movieapp/services/tmdb.dart';
 
 import 'components/movie_grid_tile.dart';
+import 'components/search_header.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,14 +12,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Movie> _movies = List<Movie>();
+  String _searchQuery = "";
   ScrollController _controller;
   int _page = 1;
 
   List<Widget> get _gridItems => _movies.map((m) => MovieGridTile(movie: m)).toList();
 
   void _loadMovies(int page) async {
-    final List<Movie> newMovies = await TmdbApi.discoverMovies(page: page);
-    _movies.addAll(newMovies);
+    if (page == 1) _movies.clear();
+
+    if (_searchQuery.trim().length > 0) {
+      final List<Movie> searchResults = await TmdbApi.searchMovies(_searchQuery, page: page);
+      _movies.addAll(searchResults);
+    } else {
+      final List<Movie> newMovies = await TmdbApi.discoverMovies(page: page);
+      _movies.addAll(newMovies);
+    }
     setState(() {});
   }
 
@@ -52,8 +61,14 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverPadding(
             padding: const EdgeInsets.all(16),
             sliver: SliverToBoxAdapter(
-              child: Text("wir glauben, dass dir diese filme gefallen könnten",
-                style: Theme.of(context).textTheme.headline4,
+              child: SearchHeader(
+                onInput: (input) {
+                  setState(() {
+                    _searchQuery = input;
+                    _page = 1;
+                  });
+                  _loadMovies(_page);
+                },
               ),
             ),
           ),

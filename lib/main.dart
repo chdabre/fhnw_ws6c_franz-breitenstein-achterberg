@@ -22,6 +22,7 @@ class MovieApp extends StatelessWidget {
       theme: appTheme(),
       initialRoute: '/genres',
       routes: routes,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

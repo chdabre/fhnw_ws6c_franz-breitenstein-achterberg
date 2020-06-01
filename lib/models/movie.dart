@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import 'model.dart';
 import 'person.dart';
 
@@ -25,7 +27,7 @@ class Movie extends Model {
       id: json['id'],
       title: json['title'],
       overview: json['overview'],
-      releaseDate: DateTime.parse(json['release_date']),
+      releaseDate: json['release_date'].length == 10 ? DateTime.parse(json['release_date']) : null,
       posterPath: json['poster_path'],
       backdropPath: json['backdrop_path'],
       cast: json['credits'] != null ? Person.listFromJson(json['credits']['cast']) : null,

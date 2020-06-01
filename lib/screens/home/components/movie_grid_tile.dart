@@ -24,7 +24,7 @@ class _MovieGridTileState extends State<MovieGridTile> {
   void _updateFavourite() async {
     final count = (await DB.queryId('movie', widget.movie.id)).length;
     _isFavourite = count > 0;
-    setState(() {});
+    if (this.mounted) setState(() {});
   }
 
   void _toggleFavourite() {
@@ -75,7 +75,10 @@ class _MovieGridTileState extends State<MovieGridTile> {
             child: Stack(
               fit: StackFit.expand,
               children: <Widget>[
-                if (_posterUrl != null) _posterImage,
+                if (_posterUrl != null) _posterImage
+                else Center(
+                    child: Text(widget.movie.title)
+                ),
                 if(_isFavourite) _favouriteIcon,
               ],
             ),

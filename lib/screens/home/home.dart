@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movieapp/models/genre.dart';
 import 'package:movieapp/models/movie.dart';
+import 'package:movieapp/services/db.dart';
 import 'package:movieapp/services/tmdb.dart';
 
 import '../../components/movie_grid_tile.dart';
@@ -28,7 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
       final List<Movie> searchResults = await TmdbApi.searchMovies(_searchQuery, page: page);
       _movies.addAll(searchResults);
     } else {
-      final List<Movie> newMovies = await TmdbApi.discoverMovies(page: page);
+      final List<Genre> genres =  List<Genre>.from(
+          (await DB.query('genre')).map((e) => Genre.fromMap(e)).toList()
+      );
+
+      final List<Movie> newMovies = await TmdbApi.discoverMovies(page: page, genres: genres);
       _movies.addAll(newMovies);
     }
     setState(() {});
@@ -61,6 +67,16 @@ class _HomeScreenState extends State<HomeScreen> {
             pinned: true,
             title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),
             actions: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.local_movies),
+                  onPressed: () async {
+                    await Navigator.pushNamed(context, '/genres');
+                    setState(() {
+                      _page = 1;
+                    });
+                    _loadMovies(_page);
+                  }
+              ),
               IconButton(
                 icon: Icon(Icons.favorite),
                 onPressed: () async {

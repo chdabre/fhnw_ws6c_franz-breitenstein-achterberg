@@ -37,4 +37,10 @@ class Genre extends Model{
 
     return map;
   }
+
+  bool operator ==(o) => o is Genre && id == o.id;
+
+  @override
+  int get hashCode => super.hashCode;
+
 }

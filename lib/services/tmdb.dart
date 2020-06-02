@@ -65,12 +65,18 @@ class TmdbApi {
     }
   }
 
-  static Future<List<Movie>> discoverMovies({int page = 1}) async {
-    final response = await _request('discover/movie', queryParameters: {
+  static Future<List<Movie>> discoverMovies({int page = 1, List<Genre> genres}) async {
+    final queryParameters = {
       'sort_by': 'popularity.desc',
       'page': page.toString()
-    });
-    
+    };
+
+    if (genres != null && genres.length > 0) {
+      queryParameters['with_genres'] = genres.map((e) => e.id).join('|');
+    }
+
+    final response = await _request('discover/movie', queryParameters: queryParameters);
+
     if (response.statusCode == 200) {
       return Movie.listFromJson(json.decode(response.body)['results']);
     } else {
@@ -105,7 +111,7 @@ class TmdbApi {
     final response = await _request('genre/movie/list');
 
     if (response.statusCode == 200) {
-      return Genre.listFromJson(json.decode(response.body));
+      return Genre.listFromJson(json.decode(response.body)['genres']);
     } else {
       throw Exception('Failed to fetch Genres. Status: ' + response.statusCode.toString());
     }

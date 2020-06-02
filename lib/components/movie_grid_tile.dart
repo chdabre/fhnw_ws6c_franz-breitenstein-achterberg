@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movieapp/models/movie.dart';
+import 'package:movieapp/screens/detail/detail.dart';
 import 'package:movieapp/services/db.dart';
 import 'package:movieapp/services/tmdb.dart';
 import 'package:movieapp/theme/style.dart';
@@ -76,6 +77,11 @@ class _MovieGridTileState extends State<MovieGridTile> {
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: InkWell(
             onDoubleTap: _toggleFavourite,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => DetailScreen(movie: widget.movie),
+              ));
+            },
             child: Stack(
               fit: StackFit.expand,
               children: <Widget>[

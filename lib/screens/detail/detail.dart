@@ -21,6 +21,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   void loadMovie (id) async {
     movie = await TmdbApi.fetchMovie(id);
+    setState(() {});
   }
 
   @override
@@ -39,7 +40,7 @@ class _DetailScreenState extends State<DetailScreen> {
           backgroundColor: Colors.red,
           onPressed: () {
             setState(() {
-              if(favourite){
+              if(favourite == true){
                 favourite = false;
               } else{
                 favourite = true;
@@ -89,34 +90,34 @@ class _DetailScreenState extends State<DetailScreen> {
                         child: ListView(
                           // This next line does the trick.
                             scrollDirection: Axis.horizontal,
-//                            children: movie.crew.map((person) => Container(
-//                                margin: EdgeInsets.fromLTRB(2, 0, 2, 0),
-//                                child: Stack(
-//                                  children: <Widget>[
-//                                    ClipRRect(
-//                                      child: Image.network(TmdbApi.buildImageUrl(person.profilePath, 'w185'), fit: BoxFit.cover,
-//                                        width: 100,),
-//                                      borderRadius: BorderRadius.circular(10.0),
-//                                    ),
-//                                    Column(
-//                                      mainAxisAlignment: MainAxisAlignment.end,
-//                                      crossAxisAlignment: CrossAxisAlignment.start,
-//                                      children: <Widget>[
-//                                        Container(
-//                                          child:Text(person.name, style: Theme.of(context).textTheme.bodyText1, textAlign: TextAlign.center,),
-//                                          color: Colors.white.withOpacity(0.6),
-//                                          width: 100,
-//                                        ),
-//                                        Container(
-//                                          child:Text(person.character, style: Theme.of(context).textTheme.bodyText2, textAlign: TextAlign.center,),
-//                                          color: Colors.white.withOpacity(0.6),
-//                                          width: 100,
-//                                        ),
-//                                      ],
-//                                    )
-//                                  ],
-//                                )
-//                            ),).toList()
+                            children: movie.cast.map((person) => Container(
+                                margin: EdgeInsets.fromLTRB(2, 0, 2, 0),
+                                child: person != null ? Stack(
+                                  children: <Widget>[
+                                    ClipRRect(
+                                      child: person.profilePath != null ? Image.network(TmdbApi.buildImageUrl(person.profilePath, 'w185'), fit: BoxFit.cover,
+                                        width: 100,) : Container(),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          child:Text(person.name, style: Theme.of(context).textTheme.bodyText1, textAlign: TextAlign.center,),
+                                          color: Colors.white.withOpacity(0.6),
+                                          width: 100,
+                                        ),
+                                        Container(
+                                          child:Text(person.character, style: Theme.of(context).textTheme.bodyText2, textAlign: TextAlign.center,),
+                                          color: Colors.white.withOpacity(0.6),
+                                          width: 100,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ): Container()
+                            ),).toList()
                         ),
                       ),
                     ),

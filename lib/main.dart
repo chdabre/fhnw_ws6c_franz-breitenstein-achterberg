@@ -20,7 +20,7 @@ class MovieApp extends StatelessWidget {
     return MaterialApp(
       title: 'connässeur',
       theme: appTheme(),
-      initialRoute: '/detail',
+      initialRoute: '/',
       routes: routes,
     );
   }

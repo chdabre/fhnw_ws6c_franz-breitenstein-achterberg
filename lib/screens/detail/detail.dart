@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movieapp/models/movie.dart';
 import 'package:movieapp/services/tmdb.dart';
+import 'dart:developer';
 
 class DetailScreen extends StatefulWidget {
 
-  Movie movie = new Movie();
+  Movie movie;
   DetailScreen({this.movie});
 
   @override
@@ -14,16 +15,22 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
 
-  String posterURL = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/";
   Movie movie;
   _DetailScreenState(this.movie);
-
-
   bool favourite = false;
+
+  void loadMovie (id) async {
+    movie = await TmdbApi.fetchMovie(id);
+  }
+
+  @override
+  void initState() {
+    loadMovie(movie.id);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),

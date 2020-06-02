@@ -59,7 +59,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 Container(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network(TmdbApi.buildImageUrl(movie.posterPath, 'w185'),
+                    child: Image.network(TmdbApi.buildImageUrl(movie.posterPath, 'h632'),
                       width: 300,
                     ),
                   ),
@@ -73,8 +73,8 @@ class _DetailScreenState extends State<DetailScreen> {
                   margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network(TmdbApi.buildImageUrl(movie.backdropPath, 'w185'),
-                      width: 200,
+                    child: Image.network(TmdbApi.buildImageUrl(movie.backdropPath, 'h632'),
+                      width: MediaQuery.of(context).size.width,
                     ),
                   ),
                 ),
@@ -89,34 +89,34 @@ class _DetailScreenState extends State<DetailScreen> {
                         child: ListView(
                           // This next line does the trick.
                             scrollDirection: Axis.horizontal,
-                            children: movie.cast.map((person) => Container(
-                                margin: EdgeInsets.fromLTRB(2, 0, 2, 0),
-                                child: Stack(
-                                  children: <Widget>[
-                                    ClipRRect(
-                                      child: Image.network(TmdbApi.buildImageUrl(person.profilePath, 'w185'), fit: BoxFit.cover,
-                                        width: 100,),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Container(
-                                          child:Text(person.name, style: Theme.of(context).textTheme.bodyText1, textAlign: TextAlign.center,),
-                                          color: Colors.white.withOpacity(0.6),
-                                          width: 100,
-                                        ),
-                                        Container(
-                                          child:Text(person.character, style: Theme.of(context).textTheme.bodyText2, textAlign: TextAlign.center,),
-                                          color: Colors.white.withOpacity(0.6),
-                                          width: 100,
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                )
-                            ),).toList()
+//                            children: movie.crew.map((person) => Container(
+//                                margin: EdgeInsets.fromLTRB(2, 0, 2, 0),
+//                                child: Stack(
+//                                  children: <Widget>[
+//                                    ClipRRect(
+//                                      child: Image.network(TmdbApi.buildImageUrl(person.profilePath, 'w185'), fit: BoxFit.cover,
+//                                        width: 100,),
+//                                      borderRadius: BorderRadius.circular(10.0),
+//                                    ),
+//                                    Column(
+//                                      mainAxisAlignment: MainAxisAlignment.end,
+//                                      crossAxisAlignment: CrossAxisAlignment.start,
+//                                      children: <Widget>[
+//                                        Container(
+//                                          child:Text(person.name, style: Theme.of(context).textTheme.bodyText1, textAlign: TextAlign.center,),
+//                                          color: Colors.white.withOpacity(0.6),
+//                                          width: 100,
+//                                        ),
+//                                        Container(
+//                                          child:Text(person.character, style: Theme.of(context).textTheme.bodyText2, textAlign: TextAlign.center,),
+//                                          color: Colors.white.withOpacity(0.6),
+//                                          width: 100,
+//                                        ),
+//                                      ],
+//                                    )
+//                                  ],
+//                                )
+//                            ),).toList()
                         ),
                       ),
                     ),

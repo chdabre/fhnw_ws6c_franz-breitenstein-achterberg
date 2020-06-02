@@ -29,6 +29,7 @@ dependencies:
   path_provider: ^1.6.0
 
   google_fonts: ^1.1.0
+  flutter_launcher_icons: ^0.7.5
 
 dev_dependencies:
   flutter_test:
@@ -47,3 +48,10 @@ flutter:
 
   assets:
     - lib/services/secrets.json
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#F2C94C"
+  adaptive_icon_foreground:  "assets/icon/icon.png"

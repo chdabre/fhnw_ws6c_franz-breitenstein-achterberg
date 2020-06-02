@@ -86,7 +86,7 @@ class TmdbApi {
     final response = await _request('genre/movie/list');
 
     if (response.statusCode == 200) {
-      return Genre.listFromJson(json.decode(response.body));
+      return Genre.listFromJson(json.decode(response.body)['genres']);
     } else {
       throw Exception('Failed to fetch Genres. Status: ' + response.statusCode.toString());
     }

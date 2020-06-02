@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movieapp/models/movie.dart';
 import 'package:movieapp/services/tmdb.dart';
-import 'package:provider/provider.dart';
+
+import '../../components/movie_grid_tile.dart';
+import 'components/search_header.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -10,53 +12,90 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Movie> _movies = List<Movie>();
+  String _searchQuery = "";
+  ScrollController _controller;
+  int _page = 1;
+
+  List<Widget> get _gridItems => _movies.map((m) => MovieGridTile(
+      key: Key(m.id.toString()),
+      movie: m
+  )).toList();
+
+  void _loadMovies(int page) async {
+    if (page == 1) _movies.clear();
+
+    if (_searchQuery.trim().length > 0) {
+      final List<Movie> searchResults = await TmdbApi.searchMovies(_searchQuery, page: page);
+      _movies.addAll(searchResults);
+    } else {
+      final List<Movie> newMovies = await TmdbApi.discoverMovies(page: page);
+      _movies.addAll(newMovies);
+    }
+    setState(() {});
+  }
+
+  /// from https://medium.com/@diegoveloper/flutter-lets-know-the-scrollcontroller-and-scrollnotification-652b2685a4ac
+  void _scrollListener() {
+    // Reached the bottom
+    if (_controller.offset >= _controller.position.maxScrollExtent && !_controller.position.outOfRange) {
+      _loadMovies(++_page);
+    }
+  }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    _loadMovies(_page);
+    _controller = ScrollController()..addListener(_scrollListener);
 
-    _loadMovies();
-  }
-
-  void _loadMovies() {
-    final tmdbApi = Provider.of<TmdbApi>(context);
-    tmdbApi.discoverMovies()
-      .then((value) => { _movies = value });
-  }
-
-  GridTile _buildMovieGridTile(BuildContext context, Movie movie) {
-    return GridTile(
-        child: Card(
-            child: Image.network(TmdbApi.buildImageUrl(movie.posterPath, 'w500'))
-      )
-    );
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16),
-        child: CustomScrollView(
-          primary: false,
-          slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: Text("wir glauben, dass dir diese filme gefallen könnten",
-                  style: Theme.of(context).textTheme.headline4,
-                ),
+      body: CustomScrollView(
+        primary: false,
+        controller: _controller,
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.favorite),
+                onPressed: () async {
+                  await Navigator.pushNamed(context, '/favourites');
+                  setState(() {
+                    _page = 1;
+                  });
+                  _loadMovies(_page);
+                }
+              )
+            ],
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverToBoxAdapter(
+              child: SearchHeader(
+                onInput: (input) {
+                  setState(() {
+                    _searchQuery = input;
+                    _page = 1;
+                  });
+                  _loadMovies(_page);
+                },
               ),
             ),
-            SliverGrid.count(
+          ),
+          SliverPadding(
+            padding:  const EdgeInsets.all(16),
+            sliver: SliverGrid.count(
                 crossAxisCount: 3,
-                children: _movies.map((e) => _buildMovieGridTile(context, e)).toList()
-            )
-          ],
-        ),
+                childAspectRatio: 2/3,
+                children: _gridItems
+            ),
+          ),
+        ],
       )
     );
   }

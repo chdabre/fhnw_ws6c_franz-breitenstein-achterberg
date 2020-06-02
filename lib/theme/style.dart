@@ -48,9 +48,13 @@ ThemeData appTheme() {
     scaffoldBackgroundColor: ThemeColors.background,
     dialogBackgroundColor: ThemeColors.background,
     primaryColor: ThemeColors.mustard,
+    accentColor: ThemeColors.mustard,
     appBarTheme: AppBarTheme(
         color: ThemeColors.background,
         brightness: Brightness.light,
+        iconTheme: IconThemeData(
+          color: ThemeColors.textBlackMediumEmphasis
+        )
     ),
     // Define the default text Themes
     textTheme: _buildDefaultTextTheme(base.textTheme),

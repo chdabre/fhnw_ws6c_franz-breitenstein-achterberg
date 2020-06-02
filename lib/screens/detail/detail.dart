@@ -124,8 +124,52 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   alignment: Alignment(0.0,0.0),
                 ),
-                SizedBox(height: 60),
-                Text("Crew:", style: Theme.of(context).textTheme.bodyText1,),
+                SizedBox(height: 20),
+                Text("Crew", style: Theme.of(context).textTheme.bodyText1,),
+                SizedBox(height: 20),
+                Container(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Container(
+                      height: 150,
+                      child: Scrollbar(
+                        child: ListView(
+                          // This next line does the trick.
+                            scrollDirection: Axis.horizontal,
+                            children: movie.crew.map((person) => Container(
+                                margin: EdgeInsets.fromLTRB(2, 0, 2, 0),
+                                child: person != null ? Stack(
+                                  children: <Widget>[
+                                    ClipRRect(
+                                      child: person.profilePath != null ? Image.network(TmdbApi.buildImageUrl(person.profilePath, 'w185'), fit: BoxFit.cover,
+                                        width: 100,) : Container(),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          child:Text(person.name, style: Theme.of(context).textTheme.bodyText1, textAlign: TextAlign.center,),
+                                          color: Colors.white.withOpacity(0.6),
+                                          width: 100,
+                                        ),
+                                        Container(
+                                          child:Text(person.job, style: Theme.of(context).textTheme.bodyText2, textAlign: TextAlign.center,),
+                                          color: Colors.white.withOpacity(0.6),
+                                          width: 100,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ): Container()
+                            ),).toList()
+                        ),
+                      ),
+                    ),
+                  ),
+                  alignment: Alignment(0.0,0.0),
+                ),
                 SizedBox(height: 10),
               ],
             )

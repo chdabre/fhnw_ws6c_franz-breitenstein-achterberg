@@ -170,7 +170,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   alignment: Alignment(0.0,0.0),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 60),
               ],
             )
             ),

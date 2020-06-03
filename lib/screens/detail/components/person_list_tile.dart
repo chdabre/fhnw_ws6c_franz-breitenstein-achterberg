@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:movieapp/models/person.dart';
+import 'package:movieapp/services/tmdb.dart';
 
 class PersonListTile extends StatelessWidget {
   const PersonListTile({

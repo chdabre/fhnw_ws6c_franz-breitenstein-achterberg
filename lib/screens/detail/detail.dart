@@ -4,6 +4,8 @@ import 'package:movieapp/models/movie.dart';
 import 'package:movieapp/services/tmdb.dart';
 import 'dart:developer';
 
+import 'package:movieapp/theme/style.dart';
+
 class DetailScreen extends StatefulWidget {
 
   Movie movie;
@@ -37,7 +39,7 @@ class _DetailScreenState extends State<DetailScreen> {
           title: Text("connässeur", style: Theme.of(context).textTheme.headline5,),
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red,
+          backgroundColor: ThemeColors.mustard,
           onPressed: () {
             setState(() {
               if(favourite == true){

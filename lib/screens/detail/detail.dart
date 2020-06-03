@@ -96,7 +96,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                   children: <Widget>[
                                     ClipRRect(
                                       child: person.profilePath != null ? Image.network(TmdbApi.buildImageUrl(person.profilePath, 'w185'), fit: BoxFit.cover,
-                                        width: 100,) : Container(),
+                                        width: 100,) : Image.asset("assets/icon/Portrait_Placeholder.png", fit: BoxFit.cover, width: 100,),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     Column(
@@ -142,7 +142,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                   children: <Widget>[
                                     ClipRRect(
                                       child: person.profilePath != null ? Image.network(TmdbApi.buildImageUrl(person.profilePath, 'w185'), fit: BoxFit.cover,
-                                        width: 100,) : Container(),
+                                        width: 100,) : Image.asset("assets/icon/Portrait_Placeholder.png", fit: BoxFit.cover, width: 100,),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     Column(

@@ -48,6 +48,7 @@ flutter:
 
   assets:
     - lib/services/secrets.json
+    - assets/icon/Portrait_Placeholder.png
 
 flutter_icons:
   android: true
@@ -55,3 +56,4 @@ flutter_icons:
   image_path: "assets/icon/icon.png"
   adaptive_icon_background: "#F2C94C"
   adaptive_icon_foreground:  "assets/icon/icon.png"
+

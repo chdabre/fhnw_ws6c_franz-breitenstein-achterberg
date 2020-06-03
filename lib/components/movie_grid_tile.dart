@@ -77,10 +77,9 @@ class _MovieGridTileState extends State<MovieGridTile> {
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: InkWell(
             onDoubleTap: _toggleFavourite,
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => DetailScreen(movie: widget.movie),
-              ));
+            onTap: () async {
+              await Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailScreen(movie: widget.movie),));
+              if (widget.onUpdate != null) widget.onUpdate();
             },
             child: Stack(
               fit: StackFit.expand,

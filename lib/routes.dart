@@ -8,5 +8,4 @@ final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   "/": (BuildContext context) => HomeScreen(),
   "/favourites": (BuildContext context) => FavouritesScreen(),
   "/genres": (BuildContext context) => GenreScreen(),
-  "/detail": (BuildContext context) => DetailScreen(),
 };

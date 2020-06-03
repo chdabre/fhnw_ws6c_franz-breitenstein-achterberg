@@ -20,7 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> get _gridItems => _movies.map((m) => MovieGridTile(
       key: Key(m.id.toString()),
-      movie: m
+      movie: m,
+      onUpdate: _reloadMovies,
   )).toList();
 
   void _loadMovies(int page) async {
@@ -38,6 +39,13 @@ class _HomeScreenState extends State<HomeScreen> {
       _movies.addAll(newMovies);
     }
     setState(() {});
+  }
+
+  void _reloadMovies()  {
+    setState(() {
+      _page = 1;
+    });
+    _loadMovies(_page);
   }
 
   /// from https://medium.com/@diegoveloper/flutter-lets-know-the-scrollcontroller-and-scrollnotification-652b2685a4ac
@@ -71,20 +79,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: Icon(Icons.local_movies),
                   onPressed: () async {
                     await Navigator.pushNamed(context, '/genres');
-                    setState(() {
-                      _page = 1;
-                    });
-                    _loadMovies(_page);
+                    _reloadMovies();
                   }
               ),
               IconButton(
                 icon: Icon(Icons.favorite),
                 onPressed: () async {
                   await Navigator.pushNamed(context, '/favourites');
-                  setState(() {
-                    _page = 1;
-                  });
-                  _loadMovies(_page);
+                  _reloadMovies();
                 }
               )
             ],

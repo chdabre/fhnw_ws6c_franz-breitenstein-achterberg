@@ -2,6 +2,10 @@
 
 Workshop 6 Final Project
 
+## Configuration
+
+- Add your TMDB API key to `lib/secrets.json`.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
